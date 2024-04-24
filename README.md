@@ -1,5 +1,11 @@
-# DicomwebDescriptor
+# Dicomweb Descriptor
 
+Parses the DicomWeb Response and Describe the Tags
+
+## Demo
+[Clique aqui para acessar o sistema](https://felipedurar.github.io/dicomweb-descriptor/public/)
+
+## Angular
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.0.0.
 
 ## Development server
