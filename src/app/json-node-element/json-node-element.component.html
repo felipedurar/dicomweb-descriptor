@@ -1,0 +1,72 @@
+<ng-container *ngIf="identAtBegin">
+    <ng-container *ngFor="let item of identArr;" >&nbsp;&nbsp;&nbsp;&nbsp;</ng-container>
+</ng-container>
+<ng-container *ngIf="!!element">
+    <ng-container *ngIf="element.type == 'property'">
+        <!-- <ng-container *ngFor="let item of identArr; let i = index" >&nbsp;&nbsp;&nbsp;&nbsp;</ng-container> -->
+        <ng-template #list>
+            <div class="d-flex flex-column" *ngIf="element.isDicomTag">
+              <p style="margin: 0; padding: 0;">{{ element.dicomTag.name }}</p>
+              <p style="margin: 0; padding: 0;">{{ "(" + element.key.substring(0, 4) + "," + element.key.substring(4, 8) + ")" }}</p>
+              <p style="margin: 0; padding: 0; font-weight: bold;">Click for Details</p>
+              <!-- <span>{{ "Value Representation (VR): " + element.dicomTag.vr }}</span><br> -->
+            </div>
+        </ng-template>
+        <!-- placement="top" [ngbTooltip]="list" -->
+        <ng-template #popContent>
+            <p style="margin: 0; padding: 0;" *ngIf="!!element.dicomTag.description"><b>Description: </b> {{ element.dicomTag.description }}</p>
+            <p style="margin: 0; padding: 0;"><b>Keyword: </b> {{ element.dicomTag.name }}</p>
+            <p style="margin: 0; padding: 0;"><b>Data Element: </b> {{ "(" + element.key.substring(0, 4) + "," + element.key.substring(4, 8) + ")" }}</p>
+            <p style="margin: 0; padding: 0;"><b>VR (Value Representation): </b> {{ getVRName() }}</p>
+            <p style="margin: 0; padding: 0;" *ngIf="!!element.dicomTag.link"><b>See: </b> <a [href]="element.dicomTag.link">{{ element.dicomTag.link }}</a></p>
+        </ng-template>
+        <!-- triggers="mouseenter:mouseleave" -->
+        <span 
+        style="cursor: pointer;"
+        [ngClass]="{'dicom-tag': element.isDicomTag === true}"
+        placement="top" [ngbTooltip]="list"
+        [autoClose]="'outside'"
+        [ngbPopover]="popContent"  popover-class="increase-popover-width"
+        [popoverTitle]="element.dicomTag.name"
+        >{{ '"' + (element.isDicomTag ? element.dicomTag.keyword : element.key) + '"' }}</span><span>{{ ': ' }}</span>
+        <app-json-node-element *ngIf="!element.isDicomTag" [element]="element.children" [identIndex]="identIndex"></app-json-node-element>
+        <app-json-node-element *ngIf="!!element.isDicomTag" [element]="findValueElement()" [identIndex]="identIndex"></app-json-node-element>
+        {{ isLastElement ? '' : ',' }}
+        <br>
+    </ng-container>
+
+    <ng-container *ngIf="element.type == 'object'">
+        {{ '{' }}<br>
+        <!-- Properties -->
+        <app-json-node-element *ngFor="let cChild of element.children; let i = index" [element]="cChild" 
+            [identIndex]="identIndex + 1" [identAtBegin]="true" [isLastElement]="i === element.children.length - 1"></app-json-node-element>
+        <ng-container *ngFor="let item of identArr;" >&nbsp;&nbsp;&nbsp;&nbsp;</ng-container>
+        {{ '}' }}
+        <!-- {{ isLastElement ? '' : ',' }} -->
+    </ng-container>
+
+    <ng-container *ngIf="element.type == 'array'">
+        {{ '[' }}<br>
+        <app-json-node-element *ngFor="let cChild of element.children; let i = index" [element]="cChild" 
+            [identIndex]="identIndex + 1" [identAtBegin]="true" [isLastElement]="i === element.children.length - 1">
+            <ng-container *ngIf="i != element.children.length - 1">
+                {{','}}<br>
+            </ng-container>
+        </app-json-node-element>
+        <br>
+        <ng-container *ngFor="let item of identArr;" >&nbsp;&nbsp;&nbsp;&nbsp;</ng-container>
+        {{ ']' }}
+    </ng-container>
+
+
+    <ng-container *ngIf="element.type == 'string'">
+        <span style="color: #d14;">{{ '"' + element.value + '"' }}</span>
+    </ng-container>
+    <ng-container *ngIf="element.type == 'number'">
+        <span style="color: #d14;">{{ element.value }}</span>
+    </ng-container>
+</ng-container>
+<ng-container *ngIf="!element">
+    <span>{{ "null" }}</span>
+</ng-container>
+<ng-content/>

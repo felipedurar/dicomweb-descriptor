@@ -1,0 +1,23 @@
+/* You can add global styles to this file, and also import other style files */
+
+/* Importing Bootstrap SCSS file. */
+// @import 'bootstrap/scss/bootstrap';
+
+html, body {
+    width: 100%;
+    height: 100%;
+}
+
+.increase-popover-width {
+    max-width: 800px !important;
+ }
+
+ .popover {
+    max-width: 800px !important;
+ }
+
+ .tooltip-inner {
+    max-width: 500px !important;
+    /* If max-width does not work, try using width instead */
+    // width: 350px; 
+}

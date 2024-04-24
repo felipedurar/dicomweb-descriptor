@@ -1,0 +1,42 @@
+<div style="display: flex; flex-direction: column; height: 100%">
+  <nav class="navbar bg-dark border-bottom border-body navbar-expand-lg" data-bs-theme="dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">DicomWeb Descriptor</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Tags</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div class="container-fluid" style="flex-grow: 1;">
+    <div class="row pt-3 pb-3" style="height: 100%;">
+      <div class="col-md-6" style="display: flex; flex-direction: column;">
+        <h5>Paste the DicomWeb Response Json below:</h5>
+        <textarea name="" id="" cols="30" rows="10" class="form-control code-area" 
+          style="width: 100%; overflow-y: scroll; flex-grow: 1;" 
+          [(ngModel)]="jsonContent" (ngModelChange)="onJsonChange()"></textarea>
+      </div>
+      <div class="col-md-6" style="display: flex; flex-direction: column;">
+        <h5>Result:</h5>
+        <div class="form-control code-area" style="width: 100%; overflow-y: scroll; flex-grow: 1;">
+          <div *ngIf="!rootElement && jsonContent.length > 0">
+            Invalid JSON!
+          </div>
+          <app-json-node-element [element]="rootElement" *ngIf="!!rootElement"></app-json-node-element>
+
+        </div>
+      </div>
+    </div>
+  
+  
+  </div>
+</div>
